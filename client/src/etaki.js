@@ -1,21 +1,91 @@
 class Etaki {
     constructor(puzzle_number, answer, level) {
         this.puzzle_number = puzzle_number
+        this.complete = false
         this.answer = answer
         this.fragments = createFragments(answer, level)
-        this.board = Array(this.answer.length).fill(null)
 
         console.log(this.fragments)
 
     }
 
+    fragmentFitsOnBoard(fragment, i) {
+        
+        for (const frag of this.fragments) {
+            if (frag === fragment) {
+                continue
+            }
+            else if (frag.position < 0 || frag.position + frag.fragment.length < i || i + fragment.length < frag.position) {
+                continue
+            }
+            else {
+                for (let j = 0; j < fragment.length; j++) {
+                    if (j + (i - frag.position) < 0 || j + (i - frag.position) >= frag.fragment.len) {
+                        continue
+                    }
+                    else if (frag.fragment[j + (i - frag.position)] !== fragment[j]) {
+                        console.log(frag.fragment[j + (i - frag.position)] + " does not eq " + fragment[j])
+                        return false
+                    }
+                }
+            }
+        }
+        return true
+    }
+
     addFragmentToBoard(fragment, i) {
-        if (!this.fragment.includes(fragment)) {
+        if (!this.fragments.includes(fragment)) {
             throw new Error("fragment does not exist")
         }
+        else if (!this.fragmentFitsOnBoard(fragment,i)) {
+            return
+        }
 
-        this.board[i] = fragment
+        fragment.position = i
 
+        if (this.isWin()) {
+            this.complete = true
+        }
+
+    }
+
+    isWin() {
+
+        // all fragments are placed on board
+        for (let i = 0; i < this.fragments.length; i++) {
+            if (this.fragments[i].position < 0) {
+                return false
+            }
+        }
+
+        // the boards result is the same as the answer
+        if (this.renderBoard().join("") !== this.answer) {
+            return false
+        }
+
+        return true
+    }
+
+    clearBoard() {
+        for (let i = 0; i < this.fragments.length; i++) {
+            this.fragments[i].position = -1
+        }
+    }
+
+    renderBoard() {
+        let board = Array(this.answer.length).fill(null)
+        for (const fragment of this.fragments) {
+            if (fragment.position < 0) {
+                continue;
+            }
+            for (let i = 0; i < fragment.fragment.length; i++) {
+                if (board[fragment.position + i] == null) {
+                    board[fragment.position + i] = fragment.fragment[i]
+                }
+            }
+
+        }
+        return board
     }
 }
 
