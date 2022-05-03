@@ -5,11 +5,14 @@ class Etaki {
         this.answer = answer
         this.fragments = createFragments(answer, level)
 
-        console.log(this.fragments)
 
     }
 
     fragmentFitsOnBoard(fragment, i) {
+
+        if (this.answer.length < fragment.fragment.length + i || i < 0) {
+            return false
+        }
         
         for (const frag of this.fragments) {
             if (frag === fragment) {
@@ -19,23 +22,20 @@ class Etaki {
                 continue
             }
             else {
-                for (let j = 0; j < fragment.length; j++) {
-                    if (j + (i - frag.position) < 0 || j + (i - frag.position) >= frag.fragment.len) {
+                for (let j = 0; j < fragment.fragment.length; j++) {
+                    if (j + (i - frag.position) < 0 || j + (i - frag.position) >= frag.fragment.length) {
                         continue
                     }
-                    else if (frag.fragment[j + (i - frag.position)] !== fragment[j]) {
-                        console.log(frag.fragment[j + (i - frag.position)] + " does not eq " + fragment[j])
+                    else if (frag.fragment[j + (i - frag.position)] !== fragment.fragment[j]) {
                         return false
                     }
                 }
             }
         }
-        console.log("piece fits")
         return true
     }
 
     addFragmentToBoard(fragment, i) {
-        console.log(this.fragmentFitsOnBoard(fragment,i))
         if (!this.fragments.includes(fragment)) {
             throw new Error("fragment does not exist")
         }
@@ -77,14 +77,21 @@ class Etaki {
 
     renderBoard() {
         let board = Array(this.answer.length).fill(null)
+        for (let i = 0; i < board.length; i++) {
+            board[i] = {
+                letter: null,
+                weight: 0
+            }
+        }
         for (const fragment of this.fragments) {
             if (fragment.position < 0) {
                 continue;
             }
             for (let i = 0; i < fragment.fragment.length; i++) {
-                if (board[fragment.position + i] == null) {
-                    board[fragment.position + i] = fragment.fragment[i]
+                if (board[fragment.position + i].letter == null) {
+                    board[fragment.position + i].letter = fragment.fragment[i]
                 }
+                board[fragment.position + i].weight++
             }
 
         }
