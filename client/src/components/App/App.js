@@ -1,72 +1,60 @@
 import './App.css';
 import Board from '../Board/Board'
 import Fragment from '../Fragment/Fragment'
-import React from 'react';
+import { React, useState, useReducer } from 'react';
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
 
 
-class App extends React.Component {
+function App(props) {
 
-    constructor(props) {
-        super(props)
-        this.state = {
-            etaki: this.props.etaki,
-            selectedPiece: 0,
-            selectedSlot: 0
+    const [etaki, setEtaki] = useState(props.etaki);
+    const [moveCount, updateMoveCount] = useReducer(m => m + 1, 0);
+    
+    let pieceList = etaki.fragments.map((frag,i) => {
+        if (frag.position < 0) {
+            return <Fragment key={i} frag_number={i} frag={frag}/>
         }
+        else {
+            return <span></span>
+        }
+    });
 
-        this.handleSelectPiece = this.handleSelectPiece.bind(this)
-        this.handleSelectSlot = this.handleSelectSlot.bind(this)
-        this.handlePlace = this.handlePlace.bind(this)
-        this.state.etaki.clearBoard()
-        
+    let placeFragment = (fragment,slot) => {
+        if (!etaki.addFragmentToBoard(etaki.fragments[fragment],slot)) {
+            console.log("placeFragment fail");
+            return false;
+        }
+        setEtaki(etaki);
+        console.log("movecount " + moveCount)
+        updateMoveCount();
+        console.log("placeFragment success")
+        return true;
     }
 
-    handleSelectPiece(e) {
-        this.setState({selectedPiece: Number(e.target.value)})
-        console.log("select piece " + Number(e.target.value))
+    let clearBoard = () => {
+        etaki.clearBoard();
+        updateMoveCount();
     }
 
-    handleSelectSlot(e) {
-        this.setState({selectedSlot: Number(e.target.value)})
-        console.log("select slot " + Number(e.target.value))
-    }
-
-    handlePlace(e) {
-        console.log("place")
-        let fragment = this.state.etaki.fragments[this.state.selectedPiece]
-        this.state.etaki.addFragmentToBoard(fragment,this.state.selectedSlot)
-        this.setState({state: this.state})
-
-    }
-
-    render() {
-        let pieceList = this.props.etaki.fragments.map((frag,i) => {
-            if (frag.position < 0) {
-                return <Fragment key={i} frag_number={i} frag={frag}/>
-            }
-            else {
-                return <span></span>
-            }
-        });
-
-        let winState = this.state.etaki.complete ? "Yes" : "No";
-        console.log(pieceList)
-        return [
+    let winState = etaki.complete ? "Yes" : "No ";
+    console.log("render")
+    return [
+        <DndProvider backend={HTML5Backend}>
             <div className="App">
-                <h1>ETAKI {this.state.etaki.puzzle_number}</h1> 
-                <Board board={this.state.etaki.renderBoard()} />
+                <h1>ETAKI {etaki.puzzle_number}</h1> 
+                <Board placeFragment={placeFragment} board={etaki.renderBoard()} />
                 {pieceList}
-                Put piece: <input onChange={this.handleSelectPiece} type='number' name='fragment'></input>
-                to: <input onChange={this.handleSelectSlot} type='number' name='fragment'></input>
-                <button onClick={this.handlePlace}>Place</button>
 
-                
+                <button onClick={clearBoard}>Clear Board</button>
+                <p>Move Count: {moveCount}</p>
                 <p>Win?: {winState}</p>
 
             </div>
-        ]
-    }
+        </DndProvider>
+    ]
+    
 }
 
 export default App;

@@ -30,15 +30,17 @@ class Etaki {
                 }
             }
         }
+        console.log("piece fits")
         return true
     }
 
     addFragmentToBoard(fragment, i) {
+        console.log(this.fragmentFitsOnBoard(fragment,i))
         if (!this.fragments.includes(fragment)) {
             throw new Error("fragment does not exist")
         }
         else if (!this.fragmentFitsOnBoard(fragment,i)) {
-            return
+            return false
         }
 
         fragment.position = i
@@ -46,6 +48,7 @@ class Etaki {
         if (this.isWin()) {
             this.complete = true
         }
+        return true
 
     }
 
