@@ -7,7 +7,6 @@ function Fragment(props){
     const [{ isDragging }, draggableFragment] = useDrag(() => ({
         type: 'fragment',
         item: () => { 
-            console.log("select fragment " + props.frag_number)
             return {
                 id: props.frag_number
             }
@@ -19,11 +18,10 @@ function Fragment(props){
         
     let tiles = props.frag.fragment.split("").map((slot, i) => {
         
-        return <Tile letter={slot}/>
+        return <Tile key={i} letter={slot}/>
         
     })
     return <div className='Fragment' ref={draggableFragment}>
-        {props.frag_number}: 
         {tiles}
     </div>
     

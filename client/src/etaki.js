@@ -52,6 +52,16 @@ class Etaki {
 
     }
 
+    removeFragmentFromBoard(fragment) {
+        if (!this.fragments.includes(fragment)) {
+            throw new Error("fragment does not exist")
+        }
+
+        fragment.position = -1
+        return true
+
+    }
+
     isWin() {
 
         // all fragments are placed on board
@@ -62,7 +72,7 @@ class Etaki {
         }
 
         // the boards result is the same as the answer
-        if (this.renderBoard().join("") !== this.answer) {
+        if (this.renderBoard().map((slot) => slot.letter).join("") !== this.answer) {
             return false
         }
 

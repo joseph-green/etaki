@@ -2,8 +2,10 @@ import './App.css';
 import Board from '../Board/Board'
 import Fragment from '../Fragment/Fragment'
 import { React, useState, useReducer } from 'react';
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { Modal, Button } from 'react-bootstrap';
+import { ArrowCounterclockwise } from 'react-bootstrap-icons';
 
 
 
@@ -11,6 +13,7 @@ function App(props) {
 
     const [etaki, setEtaki] = useState(props.etaki);
     const [moveCount, updateMoveCount] = useReducer(m => m + 1, 0);
+    const [moveStack, updateMoveStack] = useState([]);
     
     let pieceList = etaki.fragments.map((frag,i) => {
         if (frag.position < 0) {
@@ -23,14 +26,20 @@ function App(props) {
 
     let placeFragment = (fragment,slot) => {
         if (!etaki.addFragmentToBoard(etaki.fragments[fragment],slot)) {
-            console.log("placeFragment fail");
             return false;
         }
         setEtaki(etaki);
-        console.log("movecount " + moveCount)
+        moveStack.push(fragment)
+        updateMoveStack([...moveStack]);
         updateMoveCount();
-        console.log("placeFragment success")
         return true;
+    }
+
+    let undo = () => {
+        etaki.removeFragmentFromBoard(etaki.fragments[moveStack.pop()])
+        setEtaki(etaki)
+        updateMoveStack([...moveStack])
+        updateMoveCount();
     }
 
     let clearBoard = () => {
@@ -38,18 +47,40 @@ function App(props) {
         updateMoveCount();
     }
 
-    let winState = etaki.complete ? "Yes" : "No ";
-    console.log("render")
     return [
         <DndProvider backend={HTML5Backend}>
             <div className="App">
                 <h1>ETAKI {etaki.puzzle_number}</h1> 
                 <Board placeFragment={placeFragment} board={etaki.renderBoard()} />
-                {pieceList}
+                <div className='actionMenu'>
+                    <button className='clearButton' onClick={clearBoard}>Clear</button>
+                     
+                    <p className='moveCount'>{moveCount}</p>
+                    
+                    <button className='undoButton' onClick={undo}><ArrowCounterclockwise /></button>
+                </div>
+                <div className='fragmentList'>
+                    {pieceList}
+                </div>
+                {etaki.complete &&
+                    <Modal.Dialog>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Win</Modal.Title>
+                        </Modal.Header>
 
-                <button onClick={clearBoard}>Clear Board</button>
-                <p>Move Count: {moveCount}</p>
-                <p>Win?: {winState}</p>
+                        <Modal.Body>
+                            <p>You win.</p>
+                        </Modal.Body>
+
+                        <Modal.Footer>
+                            <Button variant="secondary">Close</Button>
+                            <Button variant="primary">Share</Button>
+                        </Modal.Footer>
+                    </Modal.Dialog>
+                }
+                
+
+                
 
             </div>
         </DndProvider>

@@ -1,6 +1,7 @@
 import './Board.css'
 import React, { useState } from "react"
 import { useDrop } from 'react-dnd'
+import '../Tile/Tile.css'
 
 function BoardTile(props) {
     const [weight, setWeight] = useState(0)
@@ -8,9 +9,7 @@ function BoardTile(props) {
     const [collectedProps, droppableTile] = useDrop(() => ({
         accept: 'fragment',
         drop: (item) => {
-            console.log("place in slot " + props.slot)
             if (!props.placeFragment(item.id,props.slot)) {
-                console.log("could not put piece on board")
                 return null
             }
             setWeight(weight + 1)
@@ -20,23 +19,17 @@ function BoardTile(props) {
             }
         }
       }))
-    return <div className='tile' ref={droppableTile}>{props.letter}</div>
+    return <div className='tile' ref={droppableTile} style={{fontWeight: 300 + 200 * props.weight}}>{props.letter}</div>
 }
 
 function Board(props) {
-    console.log("board: " + props.board)
     let tiles = props.board.map((slot, i) => {
-        if (slot == null) {
-            return <BoardTile placeFragment={props.placeFragment} slot={i} letter={'(' + i + ')'}/>
-        }
-        return <BoardTile  placeFragment={props.placeFragment} slot={i} letter={slot}/>
+        return <BoardTile key={i} placeFragment={props.placeFragment} slot={i} letter={slot.letter} weight={slot.weight}/>
         
     })
     return(
-        <div class="Board">
-
-            [{tiles}]
-
+        <div className="Board">
+            {tiles}
         </div> 
     )
     

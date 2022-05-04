@@ -2,6 +2,5 @@
 .Board {
     display: flex;
     min-width: 50%;
-    background-color: gainsboro;
     justify-content: center;
 }
