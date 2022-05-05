@@ -4,3 +4,8 @@
     min-width: 50%;
     justify-content: center;
 }
+
+.BoardTile {
+    background-color: #818184;
+    border: none;
+}

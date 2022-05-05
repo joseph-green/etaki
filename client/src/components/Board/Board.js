@@ -2,6 +2,7 @@ import './Board.css'
 import React, { useState } from "react"
 import { useDrop } from 'react-dnd'
 import '../Tile/Tile.css'
+import { BorderStyle } from 'react-bootstrap-icons'
 
 function BoardTile(props) {
     const [weight, setWeight] = useState(0)
@@ -19,7 +20,9 @@ function BoardTile(props) {
             }
         }
       }))
-    return <div className='tile' ref={droppableTile} style={{fontWeight: 300 + 200 * props.weight}}>{props.letter}</div>
+    return <div className='tile BoardTile' ref={droppableTile} style={{
+        borderStyle: props.weight > 0 ? "solid" : "dotted"
+    }}>{props.letter}</div>
 }
 
 function Board(props) {

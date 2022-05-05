@@ -37,6 +37,7 @@ class Etaki {
 
     addFragmentToBoard(fragment, i) {
         if (!this.fragments.includes(fragment)) {
+            console.log(this.fragments)
             throw new Error("fragment does not exist")
         }
         else if (!this.fragmentFitsOnBoard(fragment,i)) {
