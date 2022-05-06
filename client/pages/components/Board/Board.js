@@ -1,11 +1,11 @@
-import './Board.css'
+import BoardStyle from './Board.module.css'
 import React, { useState } from "react"
 import { useDrop } from 'react-dnd'
-import '../Tile/Tile.css'
 import { BorderStyle } from 'react-bootstrap-icons'
 
 function BoardTile(props) {
     const [weight, setWeight] = useState(0)
+    const overlapColors = ['#a8e6cf', '#dcedc1', '#ffd3b6', '#ffaaa5', '#ff8b94']
 
     const [collectedProps, droppableTile] = useDrop(() => ({
         accept: 'fragment',
@@ -20,8 +20,9 @@ function BoardTile(props) {
             }
         }
       }))
-    return <div className='tile BoardTile' ref={droppableTile} style={{
-        borderStyle: props.weight > 0 ? "solid" : "dotted"
+    return <div className={BoardStyle.BoardTile} ref={droppableTile} style={{
+        opacity: props.weight > 0 ? "100%" : "70%",
+        backgroundColor: props.weight > 1 ? overlapColors[props.weight - 2] : "#818184"
     }}>{props.letter}</div>
 }
 
@@ -31,7 +32,7 @@ function Board(props) {
         
     })
     return(
-        <div className="Board">
+        <div className={BoardStyle.Board}>
             {tiles}
         </div> 
     )

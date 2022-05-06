@@ -1,4 +1,4 @@
-import './App.css';
+import AppStyle from './App.module.css';
 import Board from '../Board/Board'
 import Fragment from '../Fragment/Fragment'
 import { React, useState, useReducer } from 'react';
@@ -41,7 +41,7 @@ function App(props) {
         etaki.removeFragmentFromBoard(etaki.fragments[moveStack.pop()])
         setEtaki(etaki)
         updateMoveStack([...moveStack])
-        updateMoveCount();
+        updateMoveCount(moveCount + 1);
     }
 
     let clearBoard = () => {
@@ -58,24 +58,24 @@ function App(props) {
 
     return [
         <DndProvider backend={HTML5Backend}>
-            <div className="App"> 
-                <div className='asciiHeader'>
-                    <p className='asciiArt'><span className='header-E'> ______</span><span className='header-T'>  ______ </span><span className='header-A'> ______ </span> <span className='header-K'> __  __</span>  <span className='header-I'> __</span>    </p>
-                    <p className='asciiArt'><span className='header-E'>/\  ___\</span><span className='header-T'>/\__  _\</span><span className='header-A'>/\  __ \ </span><span className='header-K'>/\ \/ / </span> <span className='header-I'>/\ </span><span className='puzzleNumber'> {etaki.puzzle_number} </span> </p>
-                    <p className='asciiArt'><span className='header-E'>\ \  __\</span><span className='header-T'>\/_/\ \/</span><span className='header-A'>\ \  __ \</span><span className='header-K'>\ \  _"-.</span><span className='header-I'>\ \ \</span>  </p>
-                    <p className='asciiArt'><span className='header-E'> \ \_____\</span><span className='header-T'> \ \_\</span><span className='header-A'> \ \_\ \_\</span><span className='header-K'>\ \_\ \_\</span><span className='header-I'>\ \_\</span> </p>
-                    <p className='asciiArt'><span className='header-E'>  \/_____/</span><span className='header-T'>  \/_/</span><span className='header-A'>  \/_/\/_/</span><span className='header-K'> \/_/\/_/</span><span className='header-I'> \/_/</span> </p>
+            <div className={AppStyle.App}> 
+                <div className={AppStyle.asciiHeader}>
+                    <p className={AppStyle.asciiArt}><span className={AppStyle.header_E}> ______</span><span className={AppStyle.header_T}>  ______ </span><span className={AppStyle.header_A}> ______ </span> <span className={AppStyle.header_K}> __  __</span>  <span className={AppStyle.header_I}> __</span>    </p>
+                    <p className={AppStyle.asciiArt}><span className={AppStyle.header_E}>/\  ___\</span><span className={AppStyle.header_T}>/\__  _\</span><span className={AppStyle.header_A}>/\  __ \ </span><span className={AppStyle.header_K}>/\ \/ / </span> <span className={AppStyle.header_I}>/\ </span><span className='puzzleNumber'> {etaki.puzzle_number} </span> </p>
+                    <p className={AppStyle.asciiArt}><span className={AppStyle.header_E}>\ \  __\</span><span className={AppStyle.header_T}>\/_/\ \/</span><span className={AppStyle.header_A}>\ \  __ \</span><span className={AppStyle.header_K}>\ \  _"-.</span><span className={AppStyle.header_I}>\ \ \</span>  </p>
+                    <p className={AppStyle.asciiArt}><span className={AppStyle.header_E}> \ \_____\</span><span className={AppStyle.header_T}> \ \_\</span><span className={AppStyle.header_A}> \ \_\ \_\</span><span className={AppStyle.header_K}>\ \_\ \_\</span><span className={AppStyle.header_I}>\ \_\</span> </p>
+                    <p className={AppStyle.asciiArt}><span className={AppStyle.header_E}>  \/_____/</span><span className={AppStyle.header_T}>  \/_/</span><span className={AppStyle.header_A}>  \/_/\/_/</span><span className={AppStyle.header_K}> \/_/\/_/</span><span className={AppStyle.header_I}> \/_/</span> </p>
                 </div>
                 <Board placeFragment={placeFragment} board={etaki.renderBoard()} />
-                <div className='actionMenu'>
-                    <button className='clearButton' onClick={clearBoard}>Clear</button>
-                    <p className='moveCount'>{moveCount}</p>
-                    <button className='undoButton' onClick={undo}><ArrowCounterclockwise /></button>
+                <div className={AppStyle.actionMenu}>
+                    <button className={AppStyle.clearButton} onClick={clearBoard}>Clear</button>
+                    <p className={AppStyle.moveCount}>{moveCount}</p>
+                    <button className={AppStyle.undoButton} onClick={undo}><ArrowCounterclockwise /></button>
                 </div>
-                <div className='fragmentList '>
+                <div className={AppStyle.fragmentList}>
                     {pieceList}
                 </div>
-                <Modal show={showInstructionModal} className='instructionDialog' onHide={() => {updateShowInstruction(false);}}>
+                <Modal show={showInstructionModal} className={AppStyle.instructionDialog} onHide={() => {updateShowInstruction(false);}}>
                     <Modal.Header closeButton>
                         <Modal.Title>How To Play</Modal.Title>
                     </Modal.Header>
@@ -86,7 +86,7 @@ function App(props) {
                         <p>Create the secret phrase to win.</p>
                     </Modal.Body>
                 </Modal>
-                <Modal show={etaki.complete && showWinModal} className='winDialog' onHide={() => {console.log("close");updateShowWin(false);}}>
+                <Modal show={etaki.complete && showWinModal} className={AppStyle.winDialog} onHide={() => {updateShowWin(false);}}>
                     <Modal.Header closeButton>
                         <Modal.Title>Win</Modal.Title>
                     </Modal.Header>

@@ -1,0 +1,20 @@
+
+.Board {
+    display: flex;
+    min-width: 50%;
+    justify-content: center;
+}
+
+.BoardTile {
+    background-color: #818184;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    margin: 5px;
+    line-height: 40px;
+    text-transform: capitalize;
+}

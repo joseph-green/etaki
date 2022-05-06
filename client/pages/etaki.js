@@ -1,5 +1,5 @@
 class Etaki {
-    constructor(puzzle_number, answer, level) {
+    constructor(puzzle_number, answer, level = hardMode) {
         this.puzzle_number = puzzle_number
         this.complete = false
         this.answer = answer
@@ -108,6 +108,16 @@ class Etaki {
         }
         return board
     }
+
+    static loadEtaki(etakiParams) {
+        console.log(etakiParams);
+        let etaki = new Etaki(etakiParams.puzzle_number, etakiParams.answer);
+        etaki.fragments = etakiParams.fragments.map((frag) => { return new Fragment(frag.fragment,frag.position)});
+        etaki.complete = etakiParams.complete;
+        return etaki
+    }
+
+    
 }
 
 class Level {
@@ -141,9 +151,9 @@ let shuffle = function(arr) {
 }
 
 class Fragment {
-    constructor(fragment) {
+    constructor(fragment, position = -1) {
         this.fragment = fragment
-        this.position = -1
+        this.position = position
     }
 }
 

@@ -11,19 +11,19 @@
   opacity: 70%;
 }
 
-.header-E {
+.header_E {
   color: #a8e6cf
 }
-.header-T {
+.header_T {
   color: #dcedc1
 }
-.header-A {
+.header_A {
   color: #ffd3b6
 }
-.header-K {
+.header_K {
   color: #ffaaa5
 }
-.header-I {
+.header_I {
   color: #ff8b94
 }
 
@@ -89,4 +89,9 @@
   flex-wrap: wrap;
   max-width: 50%;
   margin: 1em auto;
+}
+
+.instructionDialog .modal-content, .winDialog .modal-content {
+  background-color: #414144;
+  color: #fff;
 }

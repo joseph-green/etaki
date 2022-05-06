@@ -5,8 +5,9 @@
     width: 40px;
     height: 40px;
     border-radius: 5px;
-    border: 1px solid white;
     margin: 5px;
     line-height: 40px;
     text-transform: capitalize;
+    background-color: #818184;
+    border: none;
 }

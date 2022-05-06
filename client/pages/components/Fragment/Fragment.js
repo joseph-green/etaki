@@ -1,4 +1,4 @@
-import './Fragment.css'
+import FragmentStyle from './Fragment.module.css'
 import React from "react"
 import { useDrag } from 'react-dnd'
 import Tile from '../Tile/Tile'
@@ -21,7 +21,7 @@ function Fragment(props){
         return <Tile key={i} letter={slot}/>
         
     })
-    return <div className='Fragment' ref={draggableFragment}>
+    return <div className={FragmentStyle.Fragment} ref={draggableFragment}>
         {tiles}
     </div>
     
