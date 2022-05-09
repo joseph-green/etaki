@@ -2,6 +2,7 @@ import BoardStyle from './Board.module.css'
 import React, { useState } from "react"
 import { useDrop } from 'react-dnd'
 import { BorderStyle } from 'react-bootstrap-icons'
+import { Overlay } from 'react-bootstrap'
 
 function BoardTile(props) {
     const [weight, setWeight] = useState(0)
@@ -23,7 +24,7 @@ function BoardTile(props) {
     return <div className={BoardStyle.BoardTile} ref={droppableTile} style={{
         opacity: props.weight > 0 ? "100%" : "70%",
         backgroundColor: props.weight > 1 ? overlapColors[props.weight - 2] : "#818184"
-    }}>{props.letter}</div>
+    }}> {props.letter}</div>
 }
 
 function Board(props) {

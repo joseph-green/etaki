@@ -1,14 +1,24 @@
 /* PALLETTE: #a8e6cf • #dcedc1 • #ffd3b6 • #ffaaa5 • #ff8b94 */
 .App {
   text-align: center;
-  margin: 3em 0;
+  padding: 5em 0;
   background-color: #121212;
   color: #fff;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.loadingSpinner {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  top: 40%;
+  left: calc(50% - 30px);
 }
 
 .asciiHeader {
-  margin: 2em 0;
-  opacity: 70%;
+  padding: 2em 0;
+  opacity: 0.7;
+  font-size: 8pt;
 }
 
 .header_E {
@@ -29,7 +39,8 @@
 
 .asciiArt {
   font-family: monospace;
-  line-height: 0;
+  line-height: 8pt;
+  margin-bottom: 0;
   white-space: pre;
 }
 
@@ -44,23 +55,23 @@
   height: 25px;
   justify-content: center;
   align-items: baseline;
-  margin: 1em 0;
+  margin: 1em 0 ;
 }
 
-.actionMenu p, .actionMenu button {
-  margin: 0 0.5em;
-  opacity: 60%;
+
+
+.clearButton, .clearButton:focus, .clearButton:active {
+  background-color: #414144;
+  opacity: 0.8;
+  border: none;
+  box-shadow: none;
 }
 
-.clearButton {
-  border: 1px solid black;
-  border-radius: 5px;
+.clearButton:hover {
   background-color: #ff8b94;
-  padding: 0.5em;
-  text-transform: uppercase;
-  color: white;
-  font-weight: 600;
+  opacity: 1;
 }
+
 
 .moveCount {
   background-color: #ffaaa5;
@@ -73,25 +84,53 @@
   border: 1px solid black;
 }
 
-.undoButton {
-  border: 1px solid black;
+.undoButton, .undoButton:focus, .undoButton:active {
+  background-color: #414144;
+  opacity: 0.8;
+  border: none;
+  color: white;
+}
+
+.undoButton:hover {
   background-color: #ffd3b6;
   color: white;
-  height: 40px;
-  width: 40px;
-  border-radius: 20px;
-  font-weight: 600;
-  padding: 0;
+  opacity: 1;
+  box-shadow: none;
 }
 
 .fragmentList {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-around;
   max-width: 50%;
-  margin: 1em auto;
+  padding: 3em 0;
+  margin: 0 auto;
 }
 
-.instructionDialog .modal-content, .winDialog .modal-content {
+.instructionDialog , .winDialog  {
   background-color: #414144;
   color: #fff;
+}
+
+.shareButton, .shareButton:focus, .shareButton:active  {
+  background-color: #ff8b94;
+  opacity: 0.8;
+  border: none;
+  color: white;
+}
+
+.shareButton:hover {
+  background-color: #ff8b94;
+  opacity: 1;
+  border: none;
+  color: white;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  width: 200px;
+  margin-left: calc(50% - 100px);
+  color: #fff
 }

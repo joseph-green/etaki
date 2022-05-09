@@ -1,9 +1,5 @@
-import dynamic from 'next/dynamic'
 
-const DynamicApp = dynamic(
-  () => import('./components/App/App'),
-  { ssr: false }
-)
+import App from './components/App/App'
 
 
-export default DynamicApp;
+export default App;

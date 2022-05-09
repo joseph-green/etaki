@@ -40,4 +40,4 @@ jspm_packages
 package-lock.json
 
 .next
-config/
+config

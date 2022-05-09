@@ -1,5 +1,5 @@
 {
-  "name": "client",
+  "name": "etaki-client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -12,12 +12,15 @@
     "mongodb": "^4.5.0",
     "mongoose": "^6.3.2",
     "next": "^12.1.6",
-    "react": "^18.0.0",
+    "react": "^17.0.0",
     "react-bootstrap": "^2.3.1",
     "react-bootstrap-icons": "^1.8.2",
-    "react-dnd": "^16.0.1",
-    "react-dnd-html5-backend": "^16.0.1",
-    "react-dom": "^18.0.0",
+    "react-device-detect": "^2.2.2",
+    "react-dnd": "^15.1.2",
+    "react-dnd-html5-backend": "^15.1.2",
+    "react-dnd-touch-backend": "^16.0.1",
+    "react-dom": "^17.0.0",
+    "react-native": "^0.68.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -25,8 +28,7 @@
     "build": "next build",
     "start": "next start"
   },
-  "eslintConfig": {
-  },
+  "eslintConfig": {},
   "browserslist": {
     "production": [
       ">0.2%",

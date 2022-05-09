@@ -24,4 +24,4 @@ yarn-error.log*
 
 .next
 
-config
+pages/config

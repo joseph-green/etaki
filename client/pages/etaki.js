@@ -123,17 +123,21 @@ class Etaki {
 class Level {
     constructor(max_layers, max_length, lambda) {
         this.max_layers = max_layers
-        this.layers_lambda = lambda
+        this.lambda = lambda
         this.max_length = max_length
     }
 }
 
 let hardMode = new Level(2,3,1)
 
+let easyMode = new Level(3,4,0.5)
+
 let sampleExp = function(lambda) {
     let p = Math.random()
     return -Math.log(1-p)/lambda
 }
+
+
 
 let shuffle = function(arr) {
     let i = arr.length - 1
@@ -165,7 +169,7 @@ function createFragments(answer, level) {
     let open_fragments = []
     for (let i = 0; i < answer.length; i++) {
         // see how many layers we should have at i
-        let fragments_i = Math.floor(sampleExp(1))
+        let fragments_i = Math.floor(sampleExp(level.lambda))
 
         if (fragments_i < 1) {
             fragments_i = 1
@@ -206,4 +210,4 @@ function createFragments(answer, level) {
     return shuffle(fragments)
 }
 
-export {Etaki, hardMode}
+export {Etaki, hardMode, easyMode}
