@@ -110,7 +110,6 @@ class Etaki {
     }
 
     static loadEtaki(etakiParams) {
-        console.log(etakiParams);
         let etaki = new Etaki(etakiParams.puzzle_number, etakiParams.answer);
         etaki.fragments = etakiParams.fragments.map((frag) => { return new Fragment(frag.fragment,frag.position)});
         etaki.complete = etakiParams.complete;
