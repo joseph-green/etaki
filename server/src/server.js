@@ -1,4 +1,6 @@
 const http = require('http');
+const fs = require("fs");
+const https = require("https");
 const express = require('express');
 var cors = require('cors');
 const config = require('config');
@@ -45,7 +47,11 @@ app.use('/schedule', function(req,res){
   
 });
 
-const server = http.createServer(app);
+var privateKey = fs.readFileSync(__dirname + '/../localhost.key').toString();
+var certificate = fs.readFileSync(__dirname + '/../localhost.crt').toString();
+var credentials = {key: privateKey, cert: certificate, passphrase: "[passphrase]" };
+
+const server = https.createServer(credentials, app);
 const port = config.port || 3001;
 server.listen(port);
 console.debug('Server listening on port ' + port);
