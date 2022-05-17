@@ -1,1 +1,4 @@
 *.pem
+*.key
+*.crt
+*.pfx
