@@ -1,6 +1,11 @@
 import TileStyle from './Tile.module.css'
-function Tile(props) {
-    return <div className={TileStyle.tile}>{props.letter}</div>
+function FragmentTile(props) {
+    return <div className={TileStyle.tile} style={{
+        width: props.isMobile ? "30px" : "40px", 
+        height: props.isMobile ? "30px" : "40px",
+        lineHeight: props.isMobile ? "30px" : "40px",
+        margin: props.isMobile ? "3px" : "5px",
+    zIndex: 2}}>{props.letter}</div>
 }
 
-export default Tile
+export default FragmentTile
