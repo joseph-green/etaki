@@ -25,8 +25,7 @@ function FragmentDragLayer(props){
         
     })
 
-    return <> 
-        <div className={FragmentStyle.Fragment} style={{
+    return <div className={FragmentStyle.Fragment} style={{
             position: 'absolute',
             left: currentOffset.x,
             top: currentOffset.y,
@@ -35,7 +34,6 @@ function FragmentDragLayer(props){
             }}>
             {tiles}
         </div>
-        </> 
     
     
 }

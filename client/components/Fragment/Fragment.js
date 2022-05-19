@@ -6,6 +6,10 @@ import { getEmptyImage } from 'react-dnd-html5-backend'
 
 
 function Fragment(props){
+
+    if (!props.frag) {
+      return null
+    }
     const isPlaced = !(props.frag.position < 0);
     const [{ isDragging }, draggableFragment, draggableFragmentPreview] = useDrag(() => ({
         type: 'fragment-available',

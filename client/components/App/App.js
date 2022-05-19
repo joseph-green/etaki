@@ -8,11 +8,12 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend'
 import { Modal, Button, ButtonGroup, Spinner } from 'react-bootstrap';
 import { ArrowCounterclockwise } from 'react-bootstrap-icons';
-import { Etaki, easyMode, hardMode } from '../../etaki'
+import { Etaki, easyMode, hardMode } from '../../etaki.js'
 import Cookie from 'js-cookie';
 import config from '../../config/default.json';
 import {isMobile} from 'react-device-detect';
 import { CircularProgressbar } from 'react-circular-progressbar';
+
 
 
 function App(props) {
@@ -144,8 +145,10 @@ function App(props) {
         document.getElementById('favicon').href = "favicon_green.ico"
     }
 
+    let dragDropBackend = isMobile ? TouchBackend : HTML5Backend
+
     return [
-        <DndProvider backend={isMobile ? TouchBackend : HTML5Backend}>
+        <DndProvider backend={dragDropBackend}>
             <div className={AppStyle.App} style={{ padding: isMobile ? "1em" : 0}}> 
                 <div className={AppStyle.asciiHeader} style={{
                     opacity: (etaki && etaki.complete) ? 1 : 0.7,
@@ -174,11 +177,11 @@ function App(props) {
                 }}>
                     
                     {etaki.fragments.map((frag,i) => {
-                            return <Fragment key={i} frag_number={i} frag={frag} isMobile={isMobile} />
+                            return <Fragment key={i} frag_number={i} frag={frag ? frag : null /* avoid undefined*/} isMobile={isMobile} />
                         
                     })}
                     {
-                        <FragmentDragLayer key='drag-layer' fragments={etaki.fragments} isMobile={isMobile} />
+                        <FragmentDragLayer key='drag-layer' backend={dragDropBackend} fragments={etaki.fragments} isMobile={isMobile} />
                     }
                 </div>
                 : null}

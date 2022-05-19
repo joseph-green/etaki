@@ -1,6 +1,8 @@
 import './_app.css';
 import Head from 'next/head';
 
+
+
 export default function BaseApp({ Component, pageProps}) {
   return [
           <Head>

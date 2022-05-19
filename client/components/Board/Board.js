@@ -33,6 +33,11 @@ function BoardTile(props) {
 }
 
 function Board(props) {
+
+    if (!props.board) {
+        return null
+    }
+    
     let tiles = props.board.map((slot, i) => {
         return <BoardTile key={i} placeFragment={props.placeFragment} slot={i} letter={slot.letter} weight={slot.weight} isMobile={props.isMobile}/>
         
