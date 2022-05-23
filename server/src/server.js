@@ -1,7 +1,6 @@
 const http = require('http');
-const fs = require("fs");
-const https = require("https");
 const express = require('express');
+const path = require('path')
 var cors = require('cors');
 const config = require('config');
 const app = express();
@@ -19,6 +18,8 @@ client.connect();
 
 app.use(express.json());
 app.use(cors());
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, '/views'));
 
 app.use('/puzzle', function(req,res){
   client.db("main").collection("puzzles").aggregate([{ $sample: { size: 1 } }]).toArray().then(puz => {
@@ -40,18 +41,15 @@ app.use('/puzzle/:puzzleNumber', function(req,res){
 
 app.use('/schedule', function(req,res){
   client.db("main").collection("puzzles").find().toArray().then(puz => {
-    res.json(puz);
+    res.render('schedule', {'puzzles': puz})
   }).catch(err => {
-    res.json("error")
+    res.json("error: " + err)
   });
   
 });
 
-var privateKey = fs.readFileSync(__dirname + '/../localhost.key').toString();
-var certificate = fs.readFileSync(__dirname + '/../localhost.crt').toString();
-var credentials = {key: privateKey, cert: certificate, passphrase: "[passphrase]" };
 
-const server = https.createServer(credentials, app);
+const server = http.createServer(app);
 const port = config.port || 3001;
 server.listen(port);
 console.debug('Server listening on port ' + port);

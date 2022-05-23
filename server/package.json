@@ -3,11 +3,13 @@
     "version": "1.0.0",
     "description": "",
     "scripts": {
+        "dev": "nodemon -e js,ejs,json src/server.js",
         "start": "node src/server.js"
     },
     "dependencies": {
         "config": "^3.3.7",
         "cors": "^2.8.5",
+        "ejs": "^3.1.8",
         "express": "^4.17.1",
         "mongodb": "^4.5.0",
         "mongoose": "^6.3.2",
