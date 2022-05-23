@@ -108,7 +108,7 @@ function App(props) {
         try {
             etaki.removeFragmentFromBoard(etaki.fragments[moveStack.pop()])
         }
-        catch {
+        catch (e) {
             return
         }
 

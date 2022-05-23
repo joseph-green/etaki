@@ -27,7 +27,9 @@
     "start": "next start",
     "export": "next export"
   },
-  "eslintConfig": {},
+  "eslintConfig": {
+    "parser": "babel-eslint"
+  },
   "browserslist": {
     "production": [
       ">0.2%",
