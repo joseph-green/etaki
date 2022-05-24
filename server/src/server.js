@@ -4,7 +4,7 @@ const path = require('path')
 var cors = require('cors');
 const config = require('config');
 const app = express();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ISODate } = require('mongodb');
 
 
 if (!config.db) {
@@ -30,11 +30,27 @@ app.use('/puzzle', function(req,res){
     
 });
 
-app.use('/puzzle/:puzzleNumber', function(req,res){
-  client.db("main").collection("puzzles").find({puzzleNumber: Number(req.params.puzzleNumber)}).toArray().then(puz => {
-    res.json(puz[0]);
+app.use('/', function(req,res){
+
+  const today = new Date().setUTCHours(0,0,0,0)
+  
+  let tomorrow = new Date().setUTCHours(24,0,0,0)
+  client.db("main").collection("puzzles").findOne({ scheduled_date: { $gte:  new Date(today), $lte: new Date(tomorrow)}}).then(puzzle => {
+    if (puzzle) {
+      res.json(puzzle);
+    }
+    else {
+      //select a random 
+      client.db("main").collection("puzzles").aggregate([{ $match: { scheduled_date: null } },{ $sample: { size: 1 } }]).toArray().then(puzzles => {
+        client.db("main").collection("puzzles").updateOne({ _id: puzzles[0]._id }, { $set: { scheduled_date: new Date(today)}})
+        res.json(puzzles[0]);
+      }).catch(err => {
+        res.json("error: " + err)
+      })
+    }
+      
   }).catch(err => {
-    res.json("error")
+    res.json("error: " + err)
   });
     
 });
