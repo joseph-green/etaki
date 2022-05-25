@@ -77,6 +77,20 @@
 }
 
 
+.puzzleTimer, .puzzleTimer:focus, .puzzleTimer:active, .puzzleTimer:hover {
+  background-color: #414144;
+  border: none;
+  box-shadow: none;
+  cursor: default;
+}
+
+.puzzleTimer:disabled {
+  background-color: #ffd3b6;
+  opacity: 1;
+  cursor: default;
+}
+
+
 .moveCount {
   background-color: #ffaaa5;
   color: white;
@@ -121,6 +135,12 @@
   color: #fff; 
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; /* override bootstrap modal font*/
 }
+
+.winDialogHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
 
 .winDialogBody {
   display: flex;

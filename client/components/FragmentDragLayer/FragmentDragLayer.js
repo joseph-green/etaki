@@ -21,14 +21,14 @@ function FragmentDragLayer(props){
     
     let tiles = props.fragments[item.id].fragment.split("").map((slot, i) => {
         
-        return <FragmentTile key={i} letter={slot} isMobile={props.isMobile}/>
+        return <FragmentTile key={i} letter={slot} isMobile={props.isMobile} isPreview={true} />
         
     })
 
     return <div className={FragmentStyle.Fragment} style={{
             position: 'absolute',
-            left: currentOffset.x,
-            top: currentOffset.y,
+            left: currentOffset.x - 50 * item.slot - 25,
+            top: currentOffset.y - 25,
             margin: props.isMobile ? " 0 0.2em" : "1em",
             zIndex: 0
             }}>

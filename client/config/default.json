@@ -1,4 +1,4 @@
 {
     "port": 3000,
-    "apiUrl": "http://18.218.58.230/api"
+    "apiUrl": "http://localhost:3001"
 }

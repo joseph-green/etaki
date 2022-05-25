@@ -6,7 +6,7 @@ import { React, useState, useEffect } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend'
-import { Modal, Button, ButtonGroup, Spinner } from 'react-bootstrap';
+import { Modal, Button, ButtonGroup, Spinner, Container, Row, Col } from 'react-bootstrap';
 import { ArrowCounterclockwise } from 'react-bootstrap-icons';
 import { Etaki, easyMode, hardMode } from '../../etaki.js'
 import Cookie from 'js-cookie';
@@ -15,6 +15,15 @@ import { isMobile } from 'react-device-detect';
 import { CircularProgressbar } from 'react-circular-progressbar';
 
 
+function formatTime(val) {
+
+    let hours = val >= 3600 ? Math.floor(val / 3600) : null
+    let minutes = Math.floor((val % 3600) / 60)
+    let seconds = Math.round(val % 60)
+
+    
+    return ((hours ? hours + ':' : "") + minutes.toString().padStart(2,'0') + ':' + seconds.toString().padStart(2,'0'))
+}
 
 function App(props) {
 
@@ -22,33 +31,38 @@ function App(props) {
     const [katieEtaki, setKatieEtaki] = useState(undefined);
     const [isLoaded, setIsLoaded] = useState(false);
     const [isWin, setWin] = useState(false);
-
     const [moveCount, updateMoveCount] = useState(0);
     const [moveStack, updateMoveStack] = useState([]);
     const [showWinModal, updateShowWin] = useState(true);
     const [showInstructionModal, updateShowInstruction] = useState(true);
-
-    let puzzleExpiry = new Date().setHours(24, 0, 0);
-    let currentTime = new Date()
-    const [timeToNextPuzzle, setTimeToNextPuzzle] = useState((puzzleExpiry - currentTime) / 1000)
+    const [timeToNextPuzzle, setTimeToNextPuzzle] = useState((new Date().setHours(24, 0, 0) - new Date()) / 1000);
+    const [puzzleStart, setPuzzleStart] = useState(0);
+    const [puzzleTime, setPuzzleTime] = useState(0);
+    const [streak, setStreak] = useState(0);
 
 
     useEffect(() => {
-        const url = config.apiUrl + '/puzzle'
+        const url = config.apiUrl + '/'
 
-        let publicCookie = Cookie.get('public-etaki');
-        let katieCookie = Cookie.get('katie-etaki');
+        let cookie = Cookie.get('etaki');
 
-        if (publicCookie && katieCookie) {
-            let publicEtaki = Etaki.loadEtaki(JSON.parse(publicCookie))
-            let katieEtaki = Etaki.loadEtaki(JSON.parse(katieCookie))
+        if (cookie) {
+            let cookieData = JSON.parse(cookie)
+            let publicEtaki = Etaki.loadEtaki(cookieData.etaki)
+            let katieEtaki = Etaki.loadEtaki(cookieData.katieEtaki)
             setEtaki(publicEtaki);
             setKatieEtaki(katieEtaki);
 
             if (publicEtaki.complete) {
-                updateShowInstruction(false);
                 setWin(true);
+                console.log("set " + cookieData.completionTime)
+                setPuzzleTime(cookieData.completionTime)
             }
+
+            setStreak(cookieData.streak)
+
+            updateShowInstruction(false);
+            setPuzzleStart(new Date());
             setIsLoaded(true);
         }
         else {
@@ -56,14 +70,22 @@ function App(props) {
                 return response.json();
             }).then(function (data) {
 
-                let publicEtaki = new Etaki(1, data.etaki, easyMode);
-                let katieEtaki = new Etaki(1, data.katieEtaki, easyMode);
+                let publicEtaki = new Etaki(1, data.etaki, hardMode);
+                let katieEtaki = new Etaki(1, data.katieEtaki, hardMode);
 
-                Cookie.set('public-etaki', JSON.stringify(publicEtaki), { expires: new Date().setHours(24, 0, 0) })
-                Cookie.set('katie-etaki', JSON.stringify(katieEtaki), { expires: new Date().setHours(24, 0, 0) })
+                let cookieData = {
+                    etaki: JSON.stringify(publicEtaki),
+                    katieEtaki: JSON.stringify(katieEtaki),
+                    streak: 0
+
+                }
+
+                
+                Cookie.set('etaki', JSON.stringify(cookieData), { expires: new Date(new Date().setHours(24, 0, 0)) })
 
                 setEtaki(publicEtaki);
                 setKatieEtaki(katieEtaki);
+                setPuzzleStart(new Date());
                 setIsLoaded(true);
 
 
@@ -79,6 +101,9 @@ function App(props) {
             let puzzleExpiry = new Date().setHours(24, 0, 0);
             let currentTime = new Date()
             setTimeToNextPuzzle((puzzleExpiry - currentTime) / 1000)
+            if (isLoaded && !(isWin || etaki.complete)) {
+                setPuzzleTime(Math.floor(Math.round((currentTime - puzzleStart)) / 1000))
+            }
         }, 1000)
     })
 
@@ -88,16 +113,21 @@ function App(props) {
         if (!etaki.addFragmentToBoard(etaki.fragments[fragment], slot)) {
             return false;
         }
-        setEtaki(etaki);
+        
 
-        if (etaki.complete) {
+        if (etaki.complete && !isWin) {
             setWin(true);
-            Cookie.remove('public-etaki')
-            Cookie.remove('katie-etaki')
-            Cookie.set('public-etaki', JSON.stringify(etaki), { expires: new Date().setHours(24, 0, 0) })
-            Cookie.set('katie-etaki', JSON.stringify(katieEtaki), { expires: new Date().setHours(24, 0, 0) })
+            setStreak(streak + 1)
+            setPuzzleTime(Math.floor(Math.round((new Date() - puzzleStart)) / 1000))
+            let cookieData = JSON.parse(Cookie.get('etaki'))
+            cookieData.streak++;
+            cookieData.etaki = etaki;
+            cookieData.katieEtaki = katieEtaki;
+            cookieData.completionTime = Math.floor(Math.round((new Date() - puzzleStart)) / 1000);
+            Cookie.set('etaki', JSON.stringify(cookieData), { expires: new Date(new Date().setHours(24, 0, 0)) })
 
         }
+        setEtaki(etaki);
         moveStack.push(fragment)
         updateMoveStack([...moveStack]);
         updateMoveCount(moveCount + 1);
@@ -144,8 +174,7 @@ function App(props) {
         document.getElementById('favicon').href = "favicon_green.ico"
     }
 
-    let dragDropBackend = isMobile ? TouchBackend : HTML5Backend
-
+    const dragDropBackend = isMobile ? TouchBackend : HTML5Backend
     return [
         <DndProvider backend={dragDropBackend}>
             <div className={AppStyle.App} style={{ padding: isMobile ? "1em" : 0 }}>
@@ -165,6 +194,7 @@ function App(props) {
                 }}>
                     <ButtonGroup>
                         <Button className={AppStyle.clearButton} variant="primary" onClick={clearBoard} disabled={etaki.complete || isBoardEmpty}>Clear</Button>
+                        <Button className={AppStyle.puzzleTimer} disabled={etaki.complete}>{formatTime(puzzleTime)}</Button>
                         <Button className={AppStyle.undoButton} variant="secondary" onClick={undo} disabled={etaki.complete || isBoardEmpty}><ArrowCounterclockwise /></Button>
                     </ButtonGroup>
                 </div>
@@ -196,13 +226,30 @@ function App(props) {
                     </Modal.Body>
                 </Modal>
                 <Modal show={etaki && etaki.complete && showWinModal} contentClassName={AppStyle.winDialog} onHide={() => { updateShowWin(false); }} centered>
-                    <Modal.Header closeVariant='white' closeButton>
-                        <Modal.Title>Win</Modal.Title>
+                    <Modal.Header className={AppStyle.winDialogHeader} closeVariant='white' closeButton>
+                        <Container>
+                            <Row>
+                                <Col xs={6} md={6}>
+                                    <div className={AppStyle.completionTime}>
+                                        <p>Time: </p>
+                                        <p>{formatTime(puzzleTime)}</p>
+                                    </div>
+                                </Col>
+                                <Col xs={6} md={6}>
+                                    <div className={AppStyle.completionTime}>
+                                        <p>Streak: </p>
+                                        <p>{streak}</p>
+                                    </div>
+                                </Col>
+                            </Row>
+                        
+                        </Container>
+                        
                     </Modal.Header>
                     <Modal.Body className={AppStyle.winDialogBody}>
                         <div className={AppStyle.nextPuzzle}>
                             <p>Next puzzle:</p>
-                            <p>{Math.floor(timeToNextPuzzle / 3600)}:{Math.floor((timeToNextPuzzle % 3600) / 60).toString().padStart(2,'0')}:{Math.round(timeToNextPuzzle % 60).toString().padStart(2,'0')}</p>
+                            <p>{formatTime(timeToNextPuzzle)}</p>
                             <div className={AppStyle.progressWrapper}>
                                 <CircularProgressbar value={timeToNextPuzzle} minValue={0} maxValue={86400} styles={{ path: { stroke: "#fff" } }} text={""} />
                             </div>
@@ -214,11 +261,6 @@ function App(props) {
                     <p style={{ fontSize: isMobile ? "12px" : "14px" }}>Created by <a href="https://joseph.green">Joseph Green</a></p>
 
                 </div>
-
-
-
-
-
             </div>
         </DndProvider>
     ]
