@@ -231,14 +231,14 @@ function App(props) {
                             <Row>
                                 <Col xs={6} md={6}>
                                     <div className={AppStyle.completionTime}>
-                                        <p>Time: </p>
-                                        <p>{formatTime(puzzleTime)}</p>
+                                        <p className={AppStyle.timeLabel}>Time: </p>
+                                        <p className={AppStyle.timeValue}>{formatTime(puzzleTime)}</p>
                                     </div>
                                 </Col>
                                 <Col xs={6} md={6}>
-                                    <div className={AppStyle.completionTime}>
-                                        <p>Streak: </p>
-                                        <p>{streak}</p>
+                                    <div className={AppStyle.streak}>
+                                        <p className={AppStyle.streakLabel}>Streak: </p>
+                                        <p className={AppStyle.streakValue}>{streak}</p>
                                     </div>
                                 </Col>
                             </Row>
@@ -247,13 +247,15 @@ function App(props) {
                         
                     </Modal.Header>
                     <Modal.Body className={AppStyle.winDialogBody}>
-                        <div className={AppStyle.nextPuzzle}>
-                            <p>Next puzzle:</p>
-                            <p>{formatTime(timeToNextPuzzle)}</p>
-                            <div className={AppStyle.progressWrapper}>
-                                <CircularProgressbar value={timeToNextPuzzle} minValue={0} maxValue={86400} styles={{ path: { stroke: "#fff" } }} text={""} />
-                            </div>
+                        <div className={AppStyle.progressWrapper}>
+                            <CircularProgressbar value={timeToNextPuzzle} minValue={0} maxValue={86400} styles={{ path: { stroke: "#fff", strokeLinecap: 'butt', transform: 'rotate(0.75turn)', transformOrigin: 'center center'}, trail: { stroke: "#ff8b94"} }} text={""} />
                         </div>
+                        <div className={AppStyle.nextPuzzle}>
+                            <p className={AppStyle.nextPuzzleLabel}>Next puzzle:</p>
+                            <p className={AppStyle.nextPuzzleValue}>{formatTime(timeToNextPuzzle)}</p>
+                            
+                        </div>
+                        
                         <Button className={AppStyle.shareButton} variant="primary" style={{ display: (!navigator || !navigator.canShare || !navigator.canShare()) ? 'none' : 'block' }}>Share</Button>
                     </Modal.Body>
                 </Modal>

@@ -133,23 +133,45 @@
 .instructionDialog , .winDialog  {
   background-color: #414144;
   color: #fff; 
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; /* override bootstrap modal font*/
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .winDialogHeader {
   display: flex;
   justify-content: space-between;
+  
 }
 
+.streakLabel, .timeLabel, .nextPuzzleLabel {
+  font-weight: normal;
+  margin: 0;
+  font-size: 0.7em;
+  font-family: Arial;
+}
+
+.streakValue, .timeValue, .nextPuzzleValue {
+  font-weight: bold;
+  font-size: 1.5em;
+  margin: 0;
+  font-family: Arial;
+}
 
 .winDialogBody {
   display: flex;
+  justify-content: left;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.nextPuzzle {
+  text-align: center;
 }
 
 .progressWrapper {
   color: white;
-  width: 2em;
-  height: 2em
+  width: 2.5em;
+  height: 2.5em;
+  margin-right: 1em
+  
 }
 
 .shareButton, .shareButton:focus, .shareButton:active  {

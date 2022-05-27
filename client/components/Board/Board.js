@@ -1,7 +1,6 @@
 import BoardStyle from './Board.module.css'
 import React, { useEffect, useState } from "react"
 import { useDrop } from 'react-dnd'
-import { isWinPhone } from 'react-device-detect'
 
 function BoardTile(props) {
     const [weight, setWeight] = useState(0)
@@ -45,7 +44,7 @@ function BoardTile(props) {
         height: props.isMobile ? "30px" : "40px",
         lineHeight: props.isMobile ? "30px" : "40px",
         margin: props.isMobile ? "3px" : "5px",
-        border: isOver ? '2px solid red' : ( props.isHovered ? '2px solid blue' : 'none'),
+        boxShadow: isOver || props.isHovered ? '3px 3px 2px #fff' : 'none',
         zIndex: 1
     }}> {props.letter}</div>
 }
