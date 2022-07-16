@@ -45,27 +45,37 @@ function App(props) {
         const url = config.apiUrl + '/'
 
         let cookie = Cookie.get('etaki');
+        let gameLoadedFromCookie = false
 
         if (cookie) {
             let cookieData = JSON.parse(cookie)
-            let publicEtaki = Etaki.loadEtaki(cookieData.etaki)
-            let katieEtaki = Etaki.loadEtaki(cookieData.katieEtaki)
-            setEtaki(publicEtaki);
-            setKatieEtaki(katieEtaki);
 
-            if (publicEtaki.complete) {
-                setWin(true);
-                console.log("set " + cookieData.completionTime)
-                setPuzzleTime(cookieData.completionTime)
+            try {
+                let publicEtaki = Etaki.loadEtaki(cookieData.etaki)
+                let katieEtaki = Etaki.loadEtaki(cookieData.katieEtaki)
+            
+                setEtaki(publicEtaki);
+                setKatieEtaki(katieEtaki);
+
+                if (publicEtaki.complete) {
+                    setWin(true);
+                    setPuzzleTime(cookieData.completionTime)
+                }
+
+                setStreak(cookieData.streak)
+
+                updateShowInstruction(false);
+                setPuzzleStart(new Date());
+                gameLoadedFromCookie = true
+                setIsLoaded(true);
             }
-
-            setStreak(cookieData.streak)
-
-            updateShowInstruction(false);
-            setPuzzleStart(new Date());
-            setIsLoaded(true);
+            catch {
+                Cookie.remove('etaki')
+                return
+            }
         }
-        else {
+
+        if (!gameLoadedFromCookie) {
             fetch(url).then(function (response) {
                 return response.json();
             }).then(function (data) {
@@ -159,6 +169,10 @@ function App(props) {
         updateMoveCount(0);
     }
 
+    let shareGame = () => {
+        navigator.share({'text': 'I win'})
+    }
+
 
 
     if (!isLoaded || !etaki) {
@@ -179,14 +193,10 @@ function App(props) {
         <DndProvider backend={dragDropBackend}>
             <div className={AppStyle.App} style={{ padding: isMobile ? "1em" : 0 }}>
                 <div className={AppStyle.asciiHeader} style={{
-                    opacity: (etaki && etaki.complete) ? 1 : 0.7,
-                    padding: isMobile ? "1em 0 1em" : "7em 0 2em"
+                    padding: isMobile ? "1em 0 1em" : "2em 0 2em"
                 }}>
-                    <p className={AppStyle.asciiArt}><span className={AppStyle.header_E}> ______</span><span className={AppStyle.header_T}>  ______ </span><span className={AppStyle.header_A}> ______ </span> <span className={AppStyle.header_K}> __  __</span>  <span className={AppStyle.header_I}> __</span>    </p>
-                    <p className={AppStyle.asciiArt}><span className={AppStyle.header_E}>/\  ___\</span><span className={AppStyle.header_T}>/\__  _\</span><span className={AppStyle.header_A}>/\  __ \ </span><span className={AppStyle.header_K}>/\ \/ / </span> <span className={AppStyle.header_I}>/\ \</span>   </p>
-                    <p className={AppStyle.asciiArt}><span className={AppStyle.header_E}>\ \  __\</span><span className={AppStyle.header_T}>\/_/\ \/</span><span className={AppStyle.header_A}>\ \  __ \</span><span className={AppStyle.header_K}>\ \  _"-.</span><span className={AppStyle.header_I}>\ \ \</span>  </p>
-                    <p className={AppStyle.asciiArt}><span className={AppStyle.header_E}> \ \_____\</span><span className={AppStyle.header_T}> \ \_\</span><span className={AppStyle.header_A}> \ \_\ \_\</span><span className={AppStyle.header_K}>\ \_\ \_\</span><span className={AppStyle.header_I}>\ \_\</span> </p>
-                    <p className={AppStyle.asciiArt}><span className={AppStyle.header_E}>  \/_____/</span><span className={AppStyle.header_T}>  \/_/</span><span className={AppStyle.header_A}>  \/_/\/_/</span><span className={AppStyle.header_K}> \/_/\/_/</span><span className={AppStyle.header_I}> \/_/</span> </p>
+                    <p className={AppStyle.asciiArt}><span className={AppStyle.header_E}>E</span><span className={AppStyle.header_T}>T</span><span className={AppStyle.header_A}>A</span><span className={AppStyle.header_K}>K</span><span className={AppStyle.header_I}>I</span></p>
+                    
                 </div>
                 <Board placeFragment={placeFragment} isMobile={isMobile} board={board} />
                 <div className={AppStyle.actionMenu} style={{
@@ -247,16 +257,21 @@ function App(props) {
                         
                     </Modal.Header>
                     <Modal.Body className={AppStyle.winDialogBody}>
-                        <div className={AppStyle.progressWrapper}>
-                            <CircularProgressbar value={timeToNextPuzzle} minValue={0} maxValue={86400} styles={{ path: { stroke: "#fff", strokeLinecap: 'butt', transform: 'rotate(0.75turn)', transformOrigin: 'center center'}, trail: { stroke: "#ff8b94"} }} text={""} />
-                        </div>
+
+                        
                         <div className={AppStyle.nextPuzzle}>
-                            <p className={AppStyle.nextPuzzleLabel}>Next puzzle:</p>
-                            <p className={AppStyle.nextPuzzleValue}>{formatTime(timeToNextPuzzle)}</p>
+                            <div className={AppStyle.progressWrapper}>
+                                <CircularProgressbar value={86400 - timeToNextPuzzle} counterClockwise={false} minValue={0} maxValue={86400} styles={{ path: { stroke: "#9DB5B2", strokeLinecap: 'butt'}, trail: { stroke: "#FFF"} }} text={""} />
+                            </div>
+                            <div className={AppStyle.nextPuzzleInfo}>
+                                <p className={AppStyle.nextPuzzleLabel}>Next puzzle:</p>
+                                <p className={AppStyle.nextPuzzleValue}>{formatTime(timeToNextPuzzle)}</p>
+                            </div>
+                            
                             
                         </div>
                         
-                        <Button className={AppStyle.shareButton} variant="primary" style={{ display: (!navigator || !navigator.canShare || !navigator.canShare()) ? 'none' : 'block' }}>Share</Button>
+                        <Button className={AppStyle.shareButton} variant="primary" onClick={shareGame} style={{ display: (!navigator) ? 'none' : 'block' }}>Share</Button>
                     </Modal.Body>
                 </Modal>
                 <div className={AppStyle.footer}>

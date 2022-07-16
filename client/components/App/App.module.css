@@ -1,7 +1,7 @@
-/* PALLETTE: #a8e6cf • #dcedc1 • #ffd3b6 • #ffaaa5 • #ff8b94 */
+/* PALLETTE: https://coolors.co/ffffff-3b413c-9db5b2-daf0ee-94d1be*/
 .App {
   text-align: center;
-  background-color: #121212;
+  background-color: #fff;
   color: #fff;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
@@ -15,29 +15,18 @@
 }
 
 .asciiHeader {
-  padding: 7em 0 2em;
-  opacity: 0.7;
-  font-size: 8pt;
+  font-family: 'Rubik', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-weight: bold;
+  padding: 2em 0 2em;
+  font-size: 3em;
+  
 }
 
-.header_E {
-  color: #a8e6cf
-}
-.header_T {
-  color: #dcedc1
-}
-.header_A {
-  color: #ffd3b6
-}
-.header_K {
-  color: #ffaaa5
-}
-.header_I {
-  color: #ff8b94
+.header_E, .header_T, .header_A, .header_K, .header_I {
+  color: #9DB5B2
 }
 
 .asciiArt {
-  font-family: monospace;
   line-height: 8pt;
   margin-bottom: 0;
   white-space: pre;
@@ -60,62 +49,54 @@
 
 
 .clearButton, .clearButton:focus, .clearButton:active {
-  background-color: #414144;
+  background-color: #3B413C;
   opacity: 0.8;
   border: none;
   box-shadow: none;
 }
 
 .clearButton:disabled {
-  background-color: #414144;
+  background-color: #3B413C;
   border: none;
 }
 
 .clearButton:hover {
-  background-color: #ff8b94;
+  background-color: #9DB5B2;
   opacity: 1;
 }
 
 
 .puzzleTimer, .puzzleTimer:focus, .puzzleTimer:active, .puzzleTimer:hover {
-  background-color: #414144;
+  background-color: #3B413C;
   border: none;
   box-shadow: none;
   cursor: default;
 }
 
 .puzzleTimer:disabled {
-  background-color: #ffd3b6;
+  background-color: #9DB5B2;
   opacity: 1;
   cursor: default;
 }
 
 
-.moveCount {
-  background-color: #ffaaa5;
-  color: white;
-  height: 40px;
-  width: 40px;
-  line-height: 40px;
-  border-radius: 20px;
-  font-weight: 600;
-  border: 1px solid black;
-}
+
 
 .undoButton, .undoButton:focus, .undoButton:active {
-  background-color: #414144;
+  background-color: #3B413C;
   opacity: 0.8;
   border: none;
   color: white;
+  margin-left: 0 !important;
 }
 
 .undoButton:disabled {
-  background-color: #414144;
+  background-color: #3B413C;
   border: none;
 }
 
 .undoButton:hover {
-  background-color: #ffd3b6;
+  background-color: #9DB5B2;
   color: white;
   opacity: 1;
   box-shadow: none;
@@ -131,7 +112,7 @@
 }
 
 .instructionDialog , .winDialog  {
-  background-color: #414144;
+  background-color: #3B413C;
   color: #fff; 
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -158,12 +139,14 @@
 
 .winDialogBody {
   display: flex;
-  justify-content: left;
+  justify-content: space-between;
   font-family: Arial, Helvetica, sans-serif;
 }
 
 .nextPuzzle {
   text-align: center;
+  display: flex;
+  justify-content: left;
 }
 
 .progressWrapper {
@@ -175,14 +158,15 @@
 }
 
 .shareButton, .shareButton:focus, .shareButton:active  {
-  background-color: #ff8b94;
+  background-color: #9DB5B2;
   opacity: 0.8;
   border: none;
   color: white;
+  font-weight: bold;
 }
 
 .shareButton:hover {
-  background-color: #ff8b94;
+  background-color: #9DB5B2;
   opacity: 1;
   border: none;
   color: white;

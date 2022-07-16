@@ -37,7 +37,6 @@ class Etaki {
 
     addFragmentToBoard(fragment, i) {
         if (!this.fragments.includes(fragment)) {
-            console.log(this.fragments)
             throw new Error("fragment does not exist")
         }
         else if (!this.fragmentFitsOnBoard(fragment,i)) {
@@ -119,6 +118,13 @@ class Etaki {
     
 }
 
+class Fragment {
+    constructor(fragment, position = -1) {
+        this.fragment = fragment
+        this.position = position
+    }
+}
+
 class Level {
     constructor(max_layers, max_length, lambda) {
         this.max_layers = max_layers
@@ -136,8 +142,6 @@ let sampleExp = function(lambda) {
     return -Math.log(1-p)/lambda
 }
 
-
-
 let shuffle = function(arr) {
     let i = arr.length - 1
     let shuffle_arr = arr
@@ -152,14 +156,6 @@ let shuffle = function(arr) {
     return shuffle_arr
 
 }
-
-class Fragment {
-    constructor(fragment, position = -1) {
-        this.fragment = fragment
-        this.position = position
-    }
-}
-
 
 function createFragments(answer, level) {
     // the number of fragments overlaying a single position is given by a Exp(s * max_layers), where s is a constant <= 1

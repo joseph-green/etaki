@@ -3,19 +3,19 @@ import React, { useEffect, useState } from "react"
 import { useDrop } from 'react-dnd'
 
 function BoardTile(props) {
+
     const [weight, setWeight] = useState(0)
-    
-    const overlapColors = ['#a8e6cf', '#dcedc1', '#ffd3b6', '#ffaaa5', '#ff8b94']
+    const overlapColors = ['#9DB5B2', '#9DB5B2']
 
     const [{ isOver, dropResult }, droppableTile] = useDrop(() => ({
         accept: 'fragment-available',
         drop: (item) => {
+
             props.boardHover(-1,-1)
             if (!props.placeFragment(item.id,props.slot - item.slot)) {
                 return null
             }
             setWeight(weight + 1)
-
             return {
                 slot: props.slot
             }
@@ -31,20 +31,19 @@ function BoardTile(props) {
       }))
     
       useEffect(() => {
-          console.log(dropResult)
           if (dropResult) {
             props.boardHover(-1,-1)
           }
       },
       [dropResult])
+
     return <div className={BoardStyle.BoardTile} ref={droppableTile} style={{
         opacity: props.weight > 0 ? "100%" : "70%",
-        backgroundColor: props.weight > 1 ? overlapColors[props.weight - 2] : "#818184",
+        backgroundColor: props.weight > 1 ? overlapColors[props.weight - 2] : "#9DB5B2",
         width: props.isMobile ? "30px" : "40px", 
         height: props.isMobile ? "30px" : "40px",
         lineHeight: props.isMobile ? "30px" : "40px",
         margin: props.isMobile ? "3px" : "5px",
-        boxShadow: isOver || props.isHovered ? '3px 3px 2px #fff' : 'none',
         zIndex: 1
     }}> {props.letter}</div>
 }

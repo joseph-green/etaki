@@ -22,6 +22,9 @@ export default function Document() {
                 integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
                 crossOrigin="anonymous"
                 />
+                <link rel="preconnect" href="https://fonts.googleapis.com" />
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+                <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;700&family=Ubuntu+Mono:ital@0;1&display=swap" rel="stylesheet"></link>
             </Head>
             <body>
                 <Main />
