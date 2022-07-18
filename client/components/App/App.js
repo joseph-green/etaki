@@ -80,8 +80,8 @@ function App(props) {
                 return response.json();
             }).then(function (data) {
 
-                let publicEtaki = new Etaki(1, data.etaki, hardMode);
-                let katieEtaki = new Etaki(1, data.katieEtaki, hardMode);
+                let publicEtaki = new Etaki(data.puzzle_number, data.etaki, hardMode);
+                let katieEtaki = new Etaki(data.puzzle_number, data.katieEtaki, hardMode);
 
                 let cookieData = {
                     etaki: JSON.stringify(publicEtaki),
@@ -169,8 +169,19 @@ function App(props) {
         updateMoveCount(0);
     }
 
+    const WHITE_BOX_EMOJI = '\u{2B1C}';
+    const GREEN_BOX_EMOJI = '\u{1F7E9}';
     let shareGame = () => {
-        navigator.share({'text': 'I win'})
+        let output = 'ETAKI ' + etaki.puzzle_number + ' ' + formatTime(puzzleTime) + '\n'
+        board = etaki.renderBoard()
+        for (let i = 0; i < board.length; i++) {
+            let slot = board[i]
+            output += (slot.weight > 1 ? GREEN_BOX_EMOJI : WHITE_BOX_EMOJI)
+            if (i % 16 == 15) {
+                output += '\n'
+            }
+        }
+        navigator.share({'text': output})
     }
 
 
