@@ -71,7 +71,6 @@ function App(props) {
             }
             catch {
                 Cookie.remove('etaki')
-                return
             }
         }
 
@@ -129,7 +128,8 @@ function App(props) {
             setWin(true);
             setStreak(streak + 1)
             setPuzzleTime(Math.floor(Math.round((new Date() - puzzleStart)) / 1000))
-            let cookieData = JSON.parse(Cookie.get('etaki'))
+            let cookie = Cookie.get('etaki');
+            let cookieData = cookie ? JSON.parse(cookie) : {};
             cookieData.streak++;
             cookieData.etaki = etaki;
             cookieData.katieEtaki = katieEtaki;
@@ -177,9 +177,6 @@ function App(props) {
         for (let i = 0; i < board.length; i++) {
             let slot = board[i]
             output += (slot.weight > 1 ? GREEN_BOX_EMOJI : WHITE_BOX_EMOJI)
-            if (i % 16 == 15) {
-                output += '\n'
-            }
         }
         navigator.share({'text': output})
     }
@@ -201,7 +198,7 @@ function App(props) {
 
     const dragDropBackend = isMobile ? TouchBackend : HTML5Backend
     return [
-        <DndProvider backend={dragDropBackend}>
+        <DndProvider key="dnd-app-root" backend={dragDropBackend}>
             <div className={AppStyle.App} style={{ padding: isMobile ? "1em" : 0 }}>
                 <div className={AppStyle.asciiHeader} style={{
                     padding: isMobile ? "1em 0 1em" : "2em 0 2em"
@@ -286,7 +283,7 @@ function App(props) {
                     </Modal.Body>
                 </Modal>
                 <div className={AppStyle.footer}>
-                    <p style={{ fontSize: isMobile ? "12px" : "14px" }}>Created by <a href="https://joseph.green">Joseph Green</a></p>
+                    <p style={{ fontSize: isMobile ? "12px" : "14px" }}>Created by <a className={AppStyle.footerLink} href="https://joseph.green">Joseph Green</a></p>
 
                 </div>
             </div>

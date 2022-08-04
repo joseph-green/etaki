@@ -4,6 +4,10 @@
   background-color: #fff;
   color: #fff;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 60vh;
 }
 
 .loadingSpinner {
@@ -179,5 +183,11 @@
   text-align: center;
   width: 200px;
   margin-left: calc(50% - 100px);
-  color: #fff
+  color: #3B413C;
+
+}
+
+.footerLink {
+  
+  color: #9DB5B2
 }
