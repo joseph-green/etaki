@@ -24,7 +24,7 @@ function Fragment(props){
 
   
 
-  return <div className={FragmentStyle.Fragment} style={{opacity: (isDragging || isPlaced) ? 0.4 : 1, margin: props.isMobile ? " 0 0.5em" : "1em", zIndex: 1}}>
+  return <div className={FragmentStyle.Fragment} style={{opacity: (isDragging || isPlaced) ? 0.4 : 1, margin: props.isMobile ? " 0 0.5em" : "1em", zIndex: 2}}>
           {tiles}
       </div>
     

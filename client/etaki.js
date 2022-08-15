@@ -133,7 +133,7 @@ class Level {
     }
 }
 
-let hardMode = new Level(2,3,1)
+let hardMode = new Level(3,2,0.7)
 
 let easyMode = new Level(3,4,0.5)
 

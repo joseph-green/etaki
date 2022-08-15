@@ -24,13 +24,13 @@ function FragmentDragLayer(props){
         return <FragmentTile key={i} letter={slot} isMobile={props.isMobile} isPreview={true} />
         
     })
-
     return <div className={FragmentStyle.Fragment} style={{
             position: 'absolute',
             left: currentOffset.x - (props.isMobile ? 25 : 50) * item.slot - (props.isMobile ? 12.5 : 25) ,
             top: currentOffset.y - (props.isMobile ? 12.5 : 25),
             margin: props.isMobile ? " 0 0.2em" : "1em",
-            zIndex: 0
+            display: isDragging ? "flex" : "none",
+            zIndex: 1
             }}>
             {tiles}
         </div>

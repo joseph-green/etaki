@@ -37,6 +37,8 @@ function FragmentTile(props) {
         height: props.isMobile ? "30px" : "40px",
         lineHeight: props.isMobile ? "30px" : "40px",
         margin: props.isMobile ? "3px" : "5px",
+        color: "#fff",
+        opacity: "100%",
     zIndex: 2}}>{props.letter}</div>
 }
 

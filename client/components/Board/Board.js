@@ -1,11 +1,12 @@
 import BoardStyle from './Board.module.css'
 import React, { useEffect, useState } from "react"
 import { useDrop } from 'react-dnd'
+import { BorderBottom } from 'react-bootstrap-icons'
 
 function BoardTile(props) {
 
     const [weight, setWeight] = useState(0)
-    const overlapColors = ['#9DB5B2', '#9DB5B2']
+    const overlapColors = ['#94D1BE', '#94D1BE']
 
     const [{ isOver, dropResult }, droppableTile] = useDrop(() => ({
         accept: 'fragment-available',
@@ -37,15 +38,26 @@ function BoardTile(props) {
       },
       [dropResult])
 
-    return <div className={BoardStyle.BoardTile} ref={droppableTile} style={{
+    return <div className={BoardStyle.boardTileWrapper} ref={droppableTile} style={{
+        zIndex: 2
+    }}>
+        <div className={BoardStyle.BoardTile} style={{
         opacity: props.weight > 0 ? "100%" : "70%",
         backgroundColor: props.weight > 1 ? overlapColors[props.weight - 2] : "#9DB5B2",
         width: props.isMobile ? "30px" : "40px", 
         height: props.isMobile ? "30px" : "40px",
         lineHeight: props.isMobile ? "30px" : "40px",
-        margin: props.isMobile ? "3px" : "5px",
-        zIndex: 1
-    }}> {props.letter}</div>
+        margin: props.isMobile ? "5px 3px" : "10px 5px",
+        zIndex: 0
+        }}> 
+        {props.letter}
+        </div>
+        <div className={BoardStyle.hoverToken} style={{
+            opacity: props.isHovered ? "1" : "0"
+        }}>
+
+        </div>
+    </div>
 }
 
 function Board(props) {
