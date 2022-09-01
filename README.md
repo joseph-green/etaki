@@ -5,22 +5,22 @@ A DNA-inspired word puzzle game, and a birthday gift to Katie (who is an anagram
 ## Running the Client
 
 ### Development
-'''bash
+```bash
 cd ./client
 npm run dev
-'''
+```
 
 ### Production
-'''bash
+```bash
 cd ./client
 npm run build
-'''
+```
 And move the output (in the `/.next/` directory) to  your file server
 
 
 ## Running the server
 
-'''bash
+```bash
 cd ./server
 npm start
-'''
+```
